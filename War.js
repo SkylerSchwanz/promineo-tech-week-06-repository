@@ -1,0 +1,75 @@
+import { Player } from './Classes/Player.js';
+import { Deck } from './Classes/Deck.js';
+
+export { playWar };
+export { getWinner };
+
+let getWinner = (player1, player2) => {
+  if (player1.points > player2.points) {
+    return player1;
+  } else if (player2.points > player1.points) {
+    return player2;
+  } else {
+    return null;
+  }
+};
+
+const warCards = [];
+function playWar(player1, player2) {
+  // Get the cards from each player
+  const card1 = player1.hand.pop();
+  const card2 = player2.hand.pop();
+
+  warCards.push(card1, card2);
+  //console.log(player1.hand.length, player2.hand.length, warCards.length);
+
+  if (card1.rank > card2.rank) {
+    console.warn(`${player1.name}'s ${card1.toString()} has won the round! Taking ${player2.name}'s ${card2.toString()}`);
+    //player1.hand.unshift(...warCards);
+    warCards.forEach((card) => {
+      console.log(`Giving ${player1.name} ${card.toString()}...`);
+      player1.hand.unshift(card);
+    });
+    warCards.length = 0;
+    player1.addPoint();
+  } else if (card2.rank > card1.rank) {
+    console.warn(`${player2.name}'s ${card2.toString()} has won the round! Taking ${player1.name}'s ${card1.toString()}`);
+    //player2.hand.unshift(...warCards);
+    warCards.forEach((card) => {
+      console.log(`Giving ${player1.name} ${card.toString()}...`);
+      player1.hand.unshift(card);
+    });
+    warCards.length = 0;
+    player2.addPoint();
+  } else if (card1.rank === card2.rank) {
+    // War!
+    console.warn(`War! ${player1.name}'s ${card1.toString()} ——— ${player2.name}'s ${card2.toString()}`);
+    for (let i = 0; i < 3; i++) {
+      warCards.push(player1.hand.pop(), player2.hand.pop());
+    }
+    //console.log(player1.hand.length, player2.hand.length, warCards.length);
+    return null;
+  }
+  //console.log(player1.hand.length, player2.hand.length, warCards.length);
+
+  return getWinner(player1, player2);
+}
+
+const player1 = new Player('Player1');
+const player2 = new Player('Player2');
+
+const deck = new Deck();
+deck.shuffle();
+deck.deal(player1, player2);
+
+while (player1.hand.length > 0 && player2.hand.length > 0) {
+  // Compare the cards
+  playWar(player1, player2);
+}
+
+// Get the winner of the game
+let winner, loser;
+player1.points > player2.points ? ([winner, loser] = [player1, player2]) : ([winner, loser] = [player2, player1]);
+
+// Display the winner
+console.log(`${winner.name} is the winner with ${winner.points} points — ${winner.points - loser.points} points ahead of ${loser.name}!`);
