@@ -43,7 +43,7 @@ describe('War card game', () => {
 
     // Player 2 has a higher card
     it('Should return player 2 having the higher card', () => {
-      const player1 = new Player('PLayer 1');
+      const player1 = new Player('Player 1');
       const player2 = new Player('Player 2');
 
       player1.hand.push(new Card('Spades', '2'));
