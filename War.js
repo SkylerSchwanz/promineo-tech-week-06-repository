@@ -20,37 +20,42 @@ function playWar(player1, player2) {
   const card1 = player1.hand.pop();
   const card2 = player2.hand.pop();
 
-  warCards.push(card1, card2);
-  //console.log(player1.hand.length, player2.hand.length, warCards.length);
+  //warCards.push(card1, card2);
 
   if (card1.rank > card2.rank) {
-    console.warn(`${player1.name}'s ${card1.toString()} has won the round! Taking ${player2.name}'s ${card2.toString()}`);
-    //player1.hand.unshift(...warCards);
+
+    console.log(`${player1.name}'s ${card1.toString()} has won the round! Taking ${player2.name}'s ${card2.toString()}`);
+
+    player1.hand.unshift(card1, card2);
     warCards.forEach((card) => {
-      console.log(`Giving ${player1.name} ${card.toString()}...`);
+      console.warn(`Giving ${player1.name} ${card.toString()}...`);
       player1.hand.unshift(card);
     });
+
     warCards.length = 0;
     player1.addPoint();
+
   } else if (card2.rank > card1.rank) {
-    console.warn(`${player2.name}'s ${card2.toString()} has won the round! Taking ${player1.name}'s ${card1.toString()}`);
-    //player2.hand.unshift(...warCards);
+
+    console.log(`${player2.name}'s ${card2.toString()} has won the round! Taking ${player1.name}'s ${card1.toString()}`);
+
+    player2.hand.unshift(card2, card1);
     warCards.forEach((card) => {
-      console.log(`Giving ${player1.name} ${card.toString()}...`);
-      player1.hand.unshift(card);
+      console.warn(`Giving ${player2.name} ${card.toString()}...`);
+      player2.hand.unshift(card);
     });
+
     warCards.length = 0;
     player2.addPoint();
+
   } else if (card1.rank === card2.rank) {
+
     // War!
     console.warn(`War! ${player1.name}'s ${card1.toString()} ——— ${player2.name}'s ${card2.toString()}`);
-    for (let i = 0; i < 3; i++) {
-      warCards.push(player1.hand.pop(), player2.hand.pop());
-    }
-    //console.log(player1.hand.length, player2.hand.length, warCards.length);
+    warCards.push(player1.hand.pop(), player2.hand.pop());
+
     return null;
   }
-  //console.log(player1.hand.length, player2.hand.length, warCards.length);
 
   return getWinner(player1, player2);
 }
@@ -72,4 +77,4 @@ let winner, loser;
 player1.points > player2.points ? ([winner, loser] = [player1, player2]) : ([winner, loser] = [player2, player1]);
 
 // Display the winner
-console.log(`${winner.name} is the winner with ${winner.points} points — ${winner.points - loser.points} points ahead of ${loser.name}!`);
+console.warn(`${winner.name} is the winner with ${winner.points} points — ${winner.points - loser.points} points ahead of ${loser.name}!`);
