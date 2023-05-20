@@ -16,11 +16,10 @@ let getWinner = (player1, player2) => {
 
 const warCards = [];
 function playWar(player1, player2) {
+
   // Get the cards from each player
   const card1 = player1.hand.pop();
   const card2 = player2.hand.pop();
-
-  //warCards.push(card1, card2);
 
   if (card1.rank > card2.rank) {
 
@@ -35,6 +34,7 @@ function playWar(player1, player2) {
     warCards.length = 0;
     player1.addPoint();
 
+    // if card 2 has a higher value than card 1:
   } else if (card2.rank > card1.rank) {
 
     console.log(`${player2.name}'s ${card2.toString()} has won the round! Taking ${player1.name}'s ${card1.toString()}`);

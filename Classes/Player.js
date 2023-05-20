@@ -5,11 +5,6 @@ class Player {
     this.points = 0;
   }
 
-  addCard(...cards) {
-    this.hand.unshift(...cards);
-    //push
-  }
-
   addPoint() {
     this.points++;
   }
